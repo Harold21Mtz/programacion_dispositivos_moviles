@@ -1,3 +1,4 @@
+import 'package:delivery/src/login/login_controller.dart';
 import 'package:delivery/src/utils/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -10,6 +11,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginController _con = new LoginController();
+
+  @override
+  void initState() {
+    super.initState();
+    _con.init(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,42 +26,44 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       child: Stack(
         children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                _lottieAnimation(),
+                _textFieldEmail(),
+                _textFieldPassword(),
+                _buttonLogin(),
+                _textDontHaveAccount()
+              ],
+            ),
+          ),
           Positioned(
             child: _circleLogin(),
-            top: -100,
-            left: -100,
+            top: -125,
+            left: -125,
           ),
           Positioned(
             child: _textLogin(),
-            top: 52,
-            left: 26,
-          ),
-          Column(
-            children: [
-              _lottieAnimation(),
-              _textFieldEmail(),
-              _textFieldPassword(),
-              _buttonLogin(),
-              _textDontHaveAccount()
-            ],
+            top: 42,
+            left: 16,
           ),
         ],
       ),
     ));
   }
 
-  Widget _imageBanner() {
-    return Container(
-      margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height * 0.12,
-          bottom: MediaQuery.of(context).size.height * 0.15),
-      child: Image.asset(
-        'assets/img/delivery.png',
-        height: 200,
-        width: 200,
-      ),
-    );
-  }
+  // Widget _imageBanner() {
+  //   return Container(
+  //     margin: EdgeInsets.only(
+  //         top: MediaQuery.of(context).size.height * 0.12,
+  //         bottom: MediaQuery.of(context).size.height * 0.15),
+  //     child: Image.asset(
+  //       'assets/img/delivery.png',
+  //       height: 200,
+  //       width: 200,
+  //     ),
+  //   );
+  // }
 
   Widget _textFieldEmail() {
     return Container(
@@ -63,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
       child: TextField(
         decoration: InputDecoration(
             hintText: 'Correo Electrónico',
-            hintStyle: TextStyle(color: MyColors.primaryColorDark),
+            hintStyle: TextStyle(color: MyColors.primaryColorDart),
             border: InputBorder.none,
             contentPadding: EdgeInsets.all(15),
             prefixIcon: Icon(
@@ -83,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
       child: TextField(
         decoration: InputDecoration(
             hintText: 'Contraseña',
-            hintStyle: TextStyle(color: MyColors.primaryColorDark),
+            hintStyle: TextStyle(color: MyColors.primaryColorDart),
             border: InputBorder.none,
             contentPadding: EdgeInsets.all(15),
             prefixIcon: Icon(
@@ -121,10 +132,13 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(
           width: 15,
         ),
-        Text(
-          'Registrate',
-          style: TextStyle(
-              color: MyColors.primaryColor, fontWeight: FontWeight.bold),
+        GestureDetector(
+          onTap: _con.goToRegisterPage,
+          child: Text(
+            'Registrate',
+            style: TextStyle(
+                color: MyColors.primaryColor, fontWeight: FontWeight.bold),
+          ),
         )
       ],
     );
@@ -132,10 +146,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _circleLogin() {
     return Container(
-      width: 240,
-      height: 240,
+      width: 250,
+      height: 250,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
+          borderRadius: BorderRadius.circular(90),
           color: MyColors.primaryColor),
     );
   }
@@ -154,9 +168,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _lottieAnimation() {
     return Container(
-      margin: EdgeInsets.only(top: 150, bottom: 30),
-      child: Lottie.asset('assets/json/delivery.json',
-          width: 350, height: 200, fit: BoxFit.fill),
+      margin: EdgeInsets.only(top: 100, bottom: 30),
+      child: Lottie.asset(
+          'assets/json/96365-delivery-service-delivery-man.json',
+          width: 400,
+          height: 250,
+          fit: BoxFit.fill),
     );
   }
 }
