@@ -1,5 +1,7 @@
+import 'package:delivery/src/login/login_controller.dart';
 import 'package:delivery/src/utils/my_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:lottie/lottie.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,6 +12,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginController _con = new LoginController();
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance!.addPersistentFrameCallback((timeStamp) {
+      _con.init(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +72,8 @@ class _LoginPageState extends State<LoginPage> {
           color: MyColors.primaryOpacityColor,
           borderRadius: BorderRadius.circular(30)),
       child: TextField(
+        controller: _con.emailController,
+        keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
             hintText: 'Correo Electrónico',
             hintStyle: TextStyle(color: MyColors.primaryColorDark),
@@ -81,6 +94,8 @@ class _LoginPageState extends State<LoginPage> {
           color: MyColors.primaryOpacityColor,
           borderRadius: BorderRadius.circular(30)),
       child: TextField(
+        obscureText: true,
+        controller: _con.passwordController,
         decoration: InputDecoration(
             hintText: 'Contraseña',
             hintStyle: TextStyle(color: MyColors.primaryColorDark),
@@ -99,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: _con.login,
         child: Text('INGRESAR'),
         style: ElevatedButton.styleFrom(
             backgroundColor: MyColors.primaryColor,
@@ -118,13 +133,16 @@ class _LoginPageState extends State<LoginPage> {
           'No tienes Cuenta',
           style: TextStyle(color: MyColors.primaryColor),
         ),
-        const SizedBox(
-          width: 15,
+        SizedBox(
+          width: 10,
         ),
-        Text(
-          'Registrate',
-          style: TextStyle(
-              color: MyColors.primaryColor, fontWeight: FontWeight.bold),
+        GestureDetector(
+          onTap: _con.goToRegisterPage,
+          child: Text(
+            'Registrate',
+            style: TextStyle(
+                color: MyColors.primaryColor, fontWeight: FontWeight.bold),
+          ),
         )
       ],
     );
